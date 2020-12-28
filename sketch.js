@@ -1,61 +1,60 @@
+
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
-const Mouse = Matter.Mouse;
+const Body = Matter.Body;
 const Constraint = Matter.Constraint;
+var bobObject1, bobObject2, bobObject3, bobObject4, bobObject5;
+var roofObject, rope1, rope2, rope3, rope4, rope5;
 
-const MouseConstraint = Matter.MouseConstraint;
-
-var world, engine, canvas;
-var pendulum1, pendulum2, pendulum3, pendulum4, pendulum5;
-var sling1, sling2, sling3, sling4, sling5;
-var mConstraint;
-var roof;
+function preload()
+{
+	
+}
 
 function setup() {
-  canvas = createCanvas(500,400);
-  engine = Engine.create();
-  world = engine.world;
+	createCanvas(800, 600);
 
-  let canvasmouse = Mouse.create(canvas.elt);
-  canvasmouse.pixelRatio = pixelDensity();
-  let options = {
-    mouse: canvasmouse
-  };
-  mConstraint = MouseConstraint.create(engine, options);
-  World.add(world, mConstraint);
+	engine = Engine.create();
+	world = engine.world;
 
-  pendulum1 = new Pendulum(120, 250, "white");
-  pendulum2 = new Pendulum(180, 250, "grey");
-  pendulum3 = new Pendulum(240, 250, "white");
-  pendulum4 = new Pendulum(300, 250, "grey");
-  pendulum5 = new Pendulum(360, 250, "white");
-
-  sling1 = new Sling(pendulum1.body, { x: 120, y: 125 });
-  sling2 = new Sling(pendulum2.body, { x: 180, y: 125 });
-  sling3 = new Sling(pendulum3.body, { x: 240, y: 125 });
-  sling4 = new Sling(pendulum4.body, { x: 300, y: 125 });
-  sling5 = new Sling(pendulum5.body, { x: 360, y: 125 });
-
-  roof = new ground(230,120,350,50);
+	//Create the Bodies Here.
+  bobObject1 = new Bob(400,400);
+	bobObject2 = new Bob(450,400);
+	bobObject3 = new Bob(500,400);
+	bobObject4 = new Bob(350,400);
+	bobObject5 = new Bob(300,400);
+  roofObject = new Ground(400,200,300,30); 
+  rope1 = new Rope(bobObject1.body, roofObject.body, 0, 0);``
+  rope2 = new Rope(bobObject2.body, roofObject.body,50,0);
+  rope3 = new Rope(bobObject3.body, roofObject.body,100, 0);
+  rope4 = new Rope(bobObject4.body, roofObject.body, -50, 0);
+  rope5 = new Rope(bobObject5.body, roofObject.body, -100, 0);
+	Engine.run(engine);
+  
 }
+
 
 function draw() {
-  background(0);
-  Engine.update(engine);
-  pendulum1.display();
-  pendulum2.display();
-  pendulum3.display();
-  pendulum4.display();
-  pendulum5.display();
-  sling1.display();
-  sling2.display();
-  sling3.display();
-  sling4.display();
-  sling5.display();
-  roof.display();
-}
+  rectMode(CENTER);
+  background("grey");
 
-function mouseDragged() {
-  Matter.Body.setPosition(pendulum1.body, { x: mouseX, y: mouseY });
-}
+  bobObject1.display();
+  bobObject2.display();
+  bobObject3.display();
+  bobObject4.display();
+  bobObject5.display();
+  roofObject.display();
+  rope1.display();
+  rope2.display();
+  rope3.display();
+  rope4.display();
+  rope5.display();
+  drawSprites();
+ }
+ function keyPressed() {
+  if (keyCode === UP_ARROW) {
+    // Look at the hints in the document and understand how to make the package body fall only on
+    Matter.Body.applyForce(bobObject3.body, bobObject5.body.position,{x:75,y:-75});
+   }
+ }
